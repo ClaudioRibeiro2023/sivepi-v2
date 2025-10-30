@@ -5,8 +5,8 @@
 
 import { lazy, Suspense } from 'react';
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
-import { LoadingScreen } from '../components/LoadingScreen';
-import { Layout } from '../components/Layout';
+import { LoadingScreen } from '../../shared/components/LoadingScreen';
+import { Layout } from '../../shared/components/Layout';
 
 // Lazy loading dos módulos
 const Dashboard = lazy(() => import('../../modules/DashboardCompleto'));
@@ -25,11 +25,11 @@ const router = createBrowserRouter(
     {
       path: '/',
       element: <Layout />,
-    children: [
-      {
-        index: true,
-        element: <Navigate to="/dashboard" replace />,
-      },
+      children: [
+        {
+          index: true,
+          element: <Navigate to="/dashboard" replace />,
+        },
       {
         path: 'dashboard',
         element: (

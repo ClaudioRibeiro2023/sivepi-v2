@@ -204,17 +204,15 @@ export default function DashboardCompleto() {
           {/* Mini gráfico de tendência */}
           {trendData.length > 0 && (
             <div className="absolute bottom-2 right-2 opacity-50">
-              <ResponsiveContainer width={80} height={30}>
-                <LineChart data={trendData}>
-                  <Line
-                    type="monotone"
-                    dataKey="avg"
-                    stroke="#f97316"
-                    strokeWidth={2}
-                    dot={false}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
+              <LineChart width={80} height={30} data={trendData}>
+                <Line
+                  type="monotone"
+                  dataKey="avg"
+                  stroke="#f97316"
+                  strokeWidth={2}
+                  dot={false}
+                />
+              </LineChart>
             </div>
           )}
         </div>
