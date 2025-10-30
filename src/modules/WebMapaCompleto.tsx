@@ -240,7 +240,7 @@ export default function WebMapaCompleto() {
           <MapView 
             data={data}
             showHeatmap={showHeatmap}
-            showClusters={false}
+            showClusters={true}
             onMarkerClick={(record) => {
               console.log('Marker clicked:', record);
             }}

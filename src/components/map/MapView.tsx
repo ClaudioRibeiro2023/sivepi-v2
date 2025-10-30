@@ -55,8 +55,8 @@ export const MapView: React.FC<MapViewProps> = ({
       }));
   }, [data]);
 
-  // GeoJSON para heatmap
-  const heatmapGeoJSON = useMemo(() => ({
+  // GeoJSON para heatmap e clustering
+  const geoJSON = useMemo(() => ({
     type: 'FeatureCollection' as const,
     features: geoData.map(r => ({
       type: 'Feature' as const,
@@ -65,7 +65,12 @@ export const MapView: React.FC<MapViewProps> = ({
         coordinates: [r.longitude, r.latitude],
       },
       properties: {
-        value: r.quantidade_ovos,
+        id: r.id_registro,
+        ovos: r.quantidade_ovos,
+        bairro: r.bairro,
+        riskLevel: r.riskLevel,
+        ovitrampa: r.id_ovitrampa,
+        data: r.data_coleta,
       },
     })),
   }), [geoData]);
@@ -94,18 +99,93 @@ export const MapView: React.FC<MapViewProps> = ({
         <FullscreenControl position="top-right" />
         <GeolocateControl position="top-right" />
 
+        {/* Clustering ou Marcadores Individuais */}
+        {showClusters ? (
+          <Source
+            id="ovitraps"
+            type="geojson"
+            data={geoJSON}
+            cluster={true}
+            clusterMaxZoom={14}
+            clusterRadius={50}
+          >
+            {/* Círculos de cluster */}
+            <Layer
+              id="clusters"
+              type="circle"
+              filter={['has', 'point_count']}
+              paint={{
+                'circle-color': [
+                  'step',
+                  ['get', 'point_count'],
+                  '#51bbd6',
+                  10,
+                  '#f1f075',
+                  30,
+                  '#f28cb1',
+                ],
+                'circle-radius': [
+                  'step',
+                  ['get', 'point_count'],
+                  20,
+                  10,
+                  30,
+                  30,
+                  40,
+                ],
+              }}
+            />
+            
+            {/* Contagem do cluster */}
+            <Layer
+              id="cluster-count"
+              type="symbol"
+              filter={['has', 'point_count']}
+              layout={{
+                'text-field': '{point_count_abbreviated}',
+                'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                'text-size': 12,
+              }}
+              paint={{
+                'text-color': '#ffffff',
+              }}
+            />
+            
+            {/* Pontos individuais (não clusterizados) */}
+            <Layer
+              id="unclustered-point"
+              type="circle"
+              filter={['!', ['has', 'point_count']]}
+              paint={{
+                'circle-color': [
+                  'match',
+                  ['get', 'riskLevel'],
+                  'low', MAP_CONFIG.riskColors.low,
+                  'medium', MAP_CONFIG.riskColors.medium,
+                  'high', MAP_CONFIG.riskColors.high,
+                  'critical', MAP_CONFIG.riskColors.critical,
+                  '#cccccc',
+                ],
+                'circle-radius': 8,
+                'circle-stroke-width': 2,
+                'circle-stroke-color': '#fff',
+              }}
+            />
+          </Source>
+        ) : null}
+        
         {/* Heatmap Layer */}
         {showHeatmap && (
           <Source
             id="ovitraps-heat"
             type="geojson"
-            data={heatmapGeoJSON}
+            data={geoJSON}
           >
             <Layer
               id="ovitraps-heatmap"
               type="heatmap"
               paint={{
-                'heatmap-weight': ['get', 'value'],
+                'heatmap-weight': ['get', 'ovos'],
                 'heatmap-intensity': MAP_CONFIG.heatmap.intensity,
                 'heatmap-color': [
                   'interpolate',
