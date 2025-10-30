@@ -62,7 +62,7 @@ export default function WebMapaCompleto() {
   }
 
   return (
-    <div className="h-screen flex">
+    <div className="flex" style={{ height: 'calc(100vh - 0px)' }}>
       {/* Sidebar */}
       {showSidebar && (
         <aside className="w-80 bg-white border-r border-gray-200 flex flex-col overflow-hidden">
