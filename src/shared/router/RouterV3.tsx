@@ -10,7 +10,7 @@ import { LayoutV3 } from '../components/LayoutV3';
 
 // Lazy loading dos módulos
 const DashboardV3 = lazy(() => import('../../modules/DashboardV3'));
-const PanoramaExecutivo = lazy(() => import('../../modules/PanoramaExecutivoCompleto'));
+const PanoramaExecutivo = lazy(() => import('../../modules/PanoramaExecutivoV3'));
 const VigilanciaEntomologica = lazy(() => import('../../modules/VigilanciaEntomologicaCompleta'));
 const SistemaOperacional = lazy(() => import('../../modules/RespostaOperacional'));
 const MapaInterativo = lazy(() => import('../../modules/WebMapaCompleto'));
