@@ -1,8 +1,9 @@
 /**
  * Layout v3.0 - REDESIGN COMPLETO
- * Navegação moderna com microinterações
+ * Navegação moderna com microinterações + Dark Mode + Mobile
  */
 
+import { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { 
   Home, 
@@ -16,12 +17,19 @@ import {
   Search,
   Bell,
   Settings,
-  ChevronRight
+  ChevronRight,
+  Moon,
+  Sun,
+  Menu,
+  X
 } from 'lucide-react';
 import { Badge } from '../../design-system/components/Badge/Badge';
+import { useDarkMode } from '../hooks/useDarkMode';
 
 export function LayoutV3() {
   const location = useLocation();
+  const { isDark, toggle } = useDarkMode();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navigation = [
     { 
@@ -78,8 +86,21 @@ export function LayoutV3() {
 
   return (
     <div className="min-h-screen flex bg-gradient-to-br from-gray-50 to-gray-100">
+      {/* Mobile Menu Button */}
+      <button
+        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-gray-900 text-white rounded-xl shadow-lg"
+      >
+        {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+      </button>
+
       {/* Sidebar */}
-      <aside className="w-72 bg-gradient-to-b from-gray-900 to-gray-800 text-white flex flex-col shadow-2xl">
+      <aside className={`
+        w-72 bg-gradient-to-b from-gray-900 to-gray-800 text-white flex flex-col shadow-2xl
+        lg:relative fixed inset-y-0 left-0 z-40
+        transform transition-transform duration-300
+        ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+      `}>
         {/* Logo */}
         <div className="p-6 border-b border-gray-700/50">
           <div className="flex items-center gap-3">
@@ -182,14 +203,27 @@ export function LayoutV3() {
             </div>
             
             <div className="flex items-center gap-4">
+              {/* Dark Mode Toggle */}
+              <button
+                onClick={toggle}
+                className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
+                aria-label="Toggle Dark Mode"
+              >
+                {isDark ? (
+                  <Sun size={20} className="text-gray-600" />
+                ) : (
+                  <Moon size={20} className="text-gray-600" />
+                )}
+              </button>
+
               {/* Notifications */}
-              <button className="relative p-2 hover:bg-gray-100 rounded-xl transition-colors">
+              <button className="relative p-2 hover:bg-gray-100 rounded-xl transition-colors hidden sm:block">
                 <Bell size={20} className="text-gray-600" />
                 <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
               </button>
               
               {/* Avatar */}
-              <div className="flex items-center gap-3 px-3 py-2 hover:bg-gray-100 rounded-xl cursor-pointer transition-colors">
+              <div className="hidden sm:flex items-center gap-3 px-3 py-2 hover:bg-gray-100 rounded-xl cursor-pointer transition-colors">
                 <div className="w-8 h-8 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center">
                   <span className="text-white text-sm font-bold">U</span>
                 </div>

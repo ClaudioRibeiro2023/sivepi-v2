@@ -9,3 +9,6 @@ export * from './Badge/Badge';
 export * from './Input/Input';
 export * from './Select/Select';
 export * from './Alert/Alert';
+export * from './Modal/Modal';
+export * from './Tooltip/Tooltip';
+export * from './Dropdown/Dropdown';

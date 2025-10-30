@@ -132,7 +132,7 @@ body.dark-mode ::-webkit-scrollbar-thumb:hover {
   gap: var(--spacing-lg);
 }
 
-/* Animações */
+/* Animações v3.0 */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -153,6 +153,50 @@ body.dark-mode ::-webkit-scrollbar-thumb:hover {
   }
 }
 
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 @keyframes spin {
   from {
     transform: rotate(0deg);
@@ -162,6 +206,16 @@ body.dark-mode ::-webkit-scrollbar-thumb:hover {
   }
 }
 
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Utility classes */
 .fade-in {
   animation: fadeIn 0.3s ease-in-out;
 }
@@ -169,6 +223,35 @@ body.dark-mode ::-webkit-scrollbar-thumb:hover {
 .slide-in-up {
   animation: slideInUp 0.3s ease-in-out;
 }
+
+.slide-in-down {
+  animation: slideInDown 0.3s ease-in-out;
+}
+
+.slide-in-left {
+  animation: slideInLeft 0.3s ease-in-out;
+}
+
+.slide-in-right {
+  animation: slideInRight 0.3s ease-in-out;
+}
+
+.scale-in {
+  animation: scaleIn 0.2s ease-in-out;
+}
+
+/* Stagger animations */
+.stagger-children > * {
+  animation: slideInUp 0.4s ease-in-out;
+  animation-fill-mode: both;
+}
+
+.stagger-children > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger-children > *:nth-child(2) { animation-delay: 0.1s; }
+.stagger-children > *:nth-child(3) { animation-delay: 0.15s; }
+.stagger-children > *:nth-child(4) { animation-delay: 0.2s; }
+.stagger-children > *:nth-child(5) { animation-delay: 0.25s; }
+.stagger-children > *:nth-child(6) { animation-delay: 0.3s; }
 
 /* Acessibilidade */
 .sr-only {
