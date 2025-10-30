@@ -225,7 +225,7 @@ export default function WebMapaCompleto() {
       )}
 
       {/* Mapa */}
-      <div className="flex-1 relative">
+      <div className="flex-1 relative" style={{ height: '100vh' }}>
         {!showSidebar && (
           <button
             onClick={() => setShowSidebar(true)}
@@ -236,14 +236,16 @@ export default function WebMapaCompleto() {
           </button>
         )}
         
-        <MapView 
-          data={data}
-          showHeatmap={showHeatmap}
-          showClusters={false}
-          onMarkerClick={(record) => {
-            console.log('Marker clicked:', record);
-          }}
-        />
+        <div style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }}>
+          <MapView 
+            data={data}
+            showHeatmap={showHeatmap}
+            showClusters={false}
+            onMarkerClick={(record) => {
+              console.log('Marker clicked:', record);
+            }}
+          />
+        </div>
       </div>
     </div>
   );
