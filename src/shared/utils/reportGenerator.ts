@@ -8,7 +8,7 @@ import type { OvitrapData } from '../types';
 export interface ReportConfig {
   title: string;
   subtitle?: string;
-  data: any[];
+  data: OvitrapData[];
   sections?: ReportSection[];
   includeCharts?: boolean;
   includeStatistics?: boolean;
@@ -17,7 +17,7 @@ export interface ReportConfig {
 export interface ReportSection {
   title: string;
   content: string | string[];
-  data?: any[];
+  data?: Record<string, string | number>[];
 }
 
 /**

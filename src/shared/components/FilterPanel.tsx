@@ -7,9 +7,10 @@ import React, { useMemo, useCallback } from 'react';
 import { Card, CardContent, Button } from './ui';
 import { Filter, X, Calendar, MapPin } from 'lucide-react';
 import { useDataStore } from '../stores/dataStore';
+import type { OvitrapData } from '../types';
 
 interface FilterPanelProps {
-  data: any[];
+  data: OvitrapData[];
   onFilterChange?: () => void;
   showBairroFilter?: boolean;
   showPeriodFilter?: boolean;
@@ -36,7 +37,7 @@ export const FilterPanel = React.memo(function FilterPanel({
 
     data.forEach((record) => {
       if (record.ano) yearsSet.add(String(record.ano));
-      if (record.mes) monthsSet.add(String(record.mes));
+      if (record.mes_numero) monthsSet.add(String(record.mes_numero));
       if (record.semana_epidemiologica) weeksSet.add(record.semana_epidemiologica);
       if (record.bairro) bairrosSet.add(record.bairro);
     });
@@ -54,7 +55,7 @@ export const FilterPanel = React.memo(function FilterPanel({
     'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
   ], []);
 
-  const handleFilterChange = useCallback((key: string, value: any) => {
+  const handleFilterChange = useCallback((key: string, value: string | number | undefined) => {
     setFilters({ [key]: value });
     onFilterChange?.();
   }, [setFilters, onFilterChange]);
