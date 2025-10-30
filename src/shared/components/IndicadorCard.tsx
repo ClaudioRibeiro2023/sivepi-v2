@@ -3,6 +3,7 @@
  * Exibe indicadores epidemiológicos de forma visual
  */
 
+import React, { useMemo, useCallback } from 'react';
 import { Card, CardContent, Badge } from './ui';
 import { LucideIcon } from 'lucide-react';
 
@@ -17,7 +18,7 @@ interface IndicadorCardProps {
   descricao?: string;
 }
 
-export function IndicadorCard({
+export const IndicadorCard = React.memo(function IndicadorCard({
   titulo,
   valor,
   subtitulo,
@@ -54,7 +55,7 @@ export function IndicadorCard({
     gray: 'text-gray-400',
   };
 
-  const formatarValor = (v: number | string): string => {
+  const formatarValor = useCallback((v: number | string): string => {
     if (typeof v === 'string') return v;
     
     if (formato === 'percentual') {
@@ -64,9 +65,9 @@ export function IndicadorCard({
     } else {
       return v.toLocaleString('pt-BR');
     }
-  };
+  }, [formato]);
 
-  const getRiscoBadge = () => {
+  const riscoBadge = useMemo(() => {
     if (!risco) return null;
     
     const variants = {
@@ -81,7 +82,7 @@ export function IndicadorCard({
         Risco {risco.charAt(0).toUpperCase() + risco.slice(1)}
       </Badge>
     );
-  };
+  }, [risco]);
 
   return (
     <Card className={`border-2 ${coresCard[cor]}`}>
@@ -104,7 +105,7 @@ export function IndicadorCard({
                 {descricao}
               </p>
             )}
-            {getRiscoBadge()}
+            {riscoBadge}
           </div>
           {Icone && (
             <div className={coresIcone[cor]}>
@@ -115,4 +116,4 @@ export function IndicadorCard({
       </CardContent>
     </Card>
   );
-}
+});

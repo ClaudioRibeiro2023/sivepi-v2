@@ -3,7 +3,7 @@
  * Sistema de filtros avançados reutilizável
  */
 
-import { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { Card, CardContent, Button } from './ui';
 import { Filter, X, Calendar, MapPin } from 'lucide-react';
 import { useDataStore } from '../stores/dataStore';
@@ -17,7 +17,7 @@ interface FilterPanelProps {
   showOvosRangeFilter?: boolean;
 }
 
-export function FilterPanel({
+export const FilterPanel = React.memo(function FilterPanel({
   data,
   onFilterChange,
   showBairroFilter = true,
@@ -49,20 +49,20 @@ export function FilterPanel({
     };
   }, [data]);
 
-  const monthNames = [
+  const monthNames = useMemo(() => [
     'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
     'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
-  ];
+  ], []);
 
-  const handleFilterChange = (key: string, value: any) => {
+  const handleFilterChange = useCallback((key: string, value: any) => {
     setFilters({ [key]: value });
     onFilterChange?.();
-  };
+  }, [setFilters, onFilterChange]);
 
-  const handleClearFilters = () => {
+  const handleClearFilters = useCallback(() => {
     clearFilters();
     onFilterChange?.();
-  };
+  }, [clearFilters, onFilterChange]);
 
   const hasActiveFilters = filters.year || filters.month || filters.week || filters.bairro || 
                            filters.ovosMin !== undefined || filters.ovosMax !== undefined;
@@ -246,4 +246,4 @@ export function FilterPanel({
       </CardContent>
     </Card>
   );
-}
+});
