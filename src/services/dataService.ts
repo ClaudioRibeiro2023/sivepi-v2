@@ -3,12 +3,12 @@
  * Responsável por carregar, processar e fornecer dados do CSV
  */
 
-import type { AedesRecord } from '@types/index';
+import type { OvitrapData } from '../shared/types/index';
 
 /**
  * Carrega dados do arquivo CSV
  */
-export const loadCSVData = async (): Promise<AedesRecord[]> => {
+export const loadCSVData = async (): Promise<OvitrapData[]> => {
   try {
     // Verifica se estamos no ambiente do navegador
     if (typeof window === 'undefined') {
@@ -41,14 +41,14 @@ export const loadCSVData = async (): Promise<AedesRecord[]> => {
 /**
  * Faz o parsing do CSV
  */
-const parseCSV = (content: string): AedesRecord[] => {
+const parseCSV = (content: string): OvitrapData[] => {
   const lines = content.trim().split('\n');
   if (lines.length === 0) {
     throw new Error('Arquivo CSV vazio');
   }
 
   const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
-  const data: AedesRecord[] = [];
+  const data: OvitrapData[] = [];
 
   for (let i = 1; i < lines.length; i++) {
     const line = lines[i];
@@ -87,7 +87,7 @@ const parseCSV = (content: string): AedesRecord[] => {
       });
 
       if (row.id_registro && row.id_ovitrampa && row.ano > 0) {
-        data.push(row as AedesRecord);
+        data.push(row as OvitrapData);
       }
     } catch (error) {
       console.warn(`Erro ao processar linha ${i}:`, error);
@@ -107,11 +107,11 @@ const parseCSV = (content: string): AedesRecord[] => {
  * Filtra dados por período
  */
 export const filterDataByPeriod = (
-  data: AedesRecord[],
+  data: OvitrapData[],
   year?: string,
   month?: string,
   week?: string
-): AedesRecord[] => {
+): OvitrapData[] => {
   let filtered = [...data];
 
   if (year && year !== 'all') {
@@ -134,7 +134,7 @@ export const filterDataByPeriod = (
 /**
  * Obtém anos disponíveis nos dados
  */
-export const getAvailableYears = (data: AedesRecord[]): string[] => {
+export const getAvailableYears = (data: OvitrapData[]): string[] => {
   return [...new Set(data.map(r => r.ano).filter(ano => ano > 0))]
     .sort((a, b) => b - a)
     .map(String);
@@ -143,7 +143,7 @@ export const getAvailableYears = (data: AedesRecord[]): string[] => {
 /**
  * Obtém meses disponíveis para um ano específico
  */
-export const getAvailableMonths = (data: AedesRecord[], year?: string): string[] => {
+export const getAvailableMonths = (data: OvitrapData[], year?: string): string[] => {
   let filtered = data;
   if (year && year !== 'all') {
     filtered = data.filter(r => r.ano.toString() === year);
@@ -166,7 +166,7 @@ export const getAvailableMonths = (data: AedesRecord[], year?: string): string[]
  * Obtém semanas disponíveis para um mês específico
  */
 export const getAvailableWeeks = (
-  data: AedesRecord[],
+  data: OvitrapData[],
   year?: string,
   month?: string
 ): string[] => {
@@ -197,7 +197,7 @@ export const getAvailableWeeks = (
 /**
  * Calcula estatísticas gerais
  */
-export const calculateGeneralStats = (data: AedesRecord[]) => {
+export const calculateGeneralStats = (data: OvitrapData[]) => {
   return {
     totalOvos: data.reduce((sum, r) => sum + (r.quantidade_ovos || 0), 0),
     totalRegistros: data.length,

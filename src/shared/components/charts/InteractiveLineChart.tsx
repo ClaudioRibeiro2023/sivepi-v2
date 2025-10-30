@@ -233,7 +233,7 @@ export function InteractiveLineChart({
                 dot={{ r: 4, strokeWidth: 2 }}
                 activeDot={{
                   r: 6,
-                  onClick: (_, payload) => onPointClick?.(payload.payload),
+                  onClick: (_: any, payload: any) => onPointClick?.(payload.payload),
                   style: { cursor: onPointClick ? 'pointer' : 'default' },
                 }}
               />

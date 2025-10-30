@@ -189,7 +189,7 @@ const PanoramaExecutivo: React.FC = () => {
         />
         <MetricCard
           title="Ovitrampas Ativas"
-          value={latestData ? latestData.ovitrampas || '-' : '-'}
+          value={latestData ? (latestData as any).ovitrampas || latestData.registros || '-' : '-'}
           trend={null}
           icon={<CheckCircle size={24} />}
           color="#4CAF50"

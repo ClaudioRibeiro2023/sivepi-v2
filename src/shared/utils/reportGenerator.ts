@@ -245,6 +245,7 @@ export function generateEpidemiologicalBulletin(
   return {
     title: 'Boletim Epidemiológico',
     subtitle: `Período: ${period}`,
+    data: [],
     sections: [
       {
         title: 'Resumo Executivo',

@@ -154,7 +154,7 @@ export function InteractiveBarChart({
                 onMouseLeave={() => setActiveIndex(null)}
                 style={{ cursor: drillDownData ? 'pointer' : 'default' }}
               >
-                {currentData.map((entry, index) => (
+                {currentData.map((entry: any, index: number) => (
                   <Cell
                     key={`cell-${index}`}
                     fill={

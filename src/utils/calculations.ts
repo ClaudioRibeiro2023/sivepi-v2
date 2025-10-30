@@ -2,7 +2,14 @@
  * Funções de cálculo para análises epidemiológicas
  */
 
-import type { AedesRecord, ConfidenceInterval } from '@types/index';
+import type { OvitrapData } from '../shared/types/index';
+
+export interface ConfidenceInterval {
+  mean: number;
+  lower: number;
+  upper: number;
+  stdError: number;
+}
 
 /**
  * Calcula intervalo de confiança
@@ -31,7 +38,7 @@ export const calculateConfidenceInterval = (
 /**
  * Calcula IPO (Índice de Positividade de Ovitrampas)
  */
-export const calculateIPO = (data: AedesRecord[]): number => {
+export const calculateIPO = (data: OvitrapData[]): number => {
   const uniqueOvitraps = new Set(data.map(r => r.id_ovitrampa));
   const positiveOvitraps = new Set(
     data.filter(r => r.quantidade_ovos > 0).map(r => r.id_ovitrampa)
@@ -45,7 +52,7 @@ export const calculateIPO = (data: AedesRecord[]): number => {
 /**
  * Calcula IDO (Índice de Densidade de Ovos)
  */
-export const calculateIDO = (data: AedesRecord[]): number => {
+export const calculateIDO = (data: OvitrapData[]): number => {
   const positiveTraps = data.filter(r => r.quantidade_ovos > 0);
   const totalEggs = positiveTraps.reduce((sum, r) => sum + r.quantidade_ovos, 0);
   const uniquePositiveTraps = new Set(positiveTraps.map(r => r.id_ovitrampa)).size;
@@ -56,7 +63,7 @@ export const calculateIDO = (data: AedesRecord[]): number => {
 /**
  * Calcula IMO (Índice Médio de Ovos)
  */
-export const calculateIMO = (data: AedesRecord[]): number => {
+export const calculateIMO = (data: OvitrapData[]): number => {
   const totalEggs = data.reduce((sum, r) => sum + r.quantidade_ovos, 0);
   return data.length > 0 ? totalEggs / data.length : 0;
 };
@@ -64,7 +71,7 @@ export const calculateIMO = (data: AedesRecord[]): number => {
 /**
  * Calcula IVO (Índice de Variação de Oviposição)
  */
-export const calculateIVO = (data: AedesRecord[]): number => {
+export const calculateIVO = (data: OvitrapData[]): number => {
   const eggCounts = data.map(r => r.quantidade_ovos);
   const mean = calculateIMO(data);
   
